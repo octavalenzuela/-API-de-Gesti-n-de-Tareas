@@ -20,7 +20,7 @@ php -S localhost:8081 -t public/
 ## Resolución de la Prueba
 
 ### Nivel 1 — Comprensión Teórica
-1. ¿Qué es Mezzio y ciclo de vida HTTP?
+¿Qué es Mezzio y ciclo de vida HTTP?
 Mezzio es un micro-framework orientado a middlewares. La petición entra por public/index.php, activa el contenedor de dependencias y pasa por un pipeline de middlewares. El Router identifica la ruta y el método (ej: POST /api/tasks), envía la petición al Handler que corresponda, y este devuelve una respuesta que viaja de vuelta por el pipeline hasta el usuario por el medio que se solicite.
 
 Ciclo de vida de una petición:
@@ -30,9 +30,9 @@ Routing: Dentro del pipeline, el middleware mira la URL y el metodo (POST, GET, 
 Handler: Recibe la petición ya procesada, valida los datos, ejecuta el codigo necesario y genera una respuesta.
 Salida: La respuesta viaja de vuelta a través del pipeline de middlewares hasta que el servidor envía el JSON al usuario.
 
-2. Patrón Repository y TaskRepository
+Patrón Repository y TaskRepository
 El patrón Repository sirve para desacoplar la lógica de negocio de la base de datos. Usamos TaskRepository para que los Handlers no tengan que saber SQL ni Doctrine, solo piden datos al repositorio. Esto hace que el código sea más legible y facil de cambiar en futuras modificaciones.
 
-3. Factory y DI Container
+Factory y DI Container
 Un Factory es una clase encargada de crear objetos. En el contenedor de dependencias, el Factory se asegura de buscar todas las piezas necesarias y armar el objeto listo para usar, funciona como una 
 especia de orquestador.
