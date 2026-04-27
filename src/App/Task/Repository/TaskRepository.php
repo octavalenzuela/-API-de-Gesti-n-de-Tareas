@@ -24,9 +24,27 @@ class TaskRepository
     }
 
     /** @return Task[] */
+
+    public function findByFilters(?string $status = null): array
+    {
+        $qb = $this->repo->createQueryBuilder('t');
+
+        if ($status !== null && $status !== '') {
+            $qb->where('t.status = :status')
+               ->setParameter('status', $status);
+        }
+
+        $qb->orderBy('t.createdAt', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+    /**
+     * @return Task[]
+     */ 
+
     public function findAll(): array
     {
-        return $this->repo->findAll();
+        return $this->findByFilters();
     }
 
     public function findById(int $id): ?Task

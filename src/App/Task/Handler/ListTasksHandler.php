@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Task\Handler;
 
+use App\Task\Entity\Task;
 use App\Task\Repository\TaskRepository;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
@@ -23,8 +24,9 @@ class ListTasksHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $tasks = $this->repository->findAll();
-
+        $queryParams = $request->getQueryParams();
+        $status = $queryParams['status'] ?? null;
+        $tasks = $this->repository->findByFilters($status);
         $data = array_map(fn($task) => $task->toArray(), $tasks);
 
         return new JsonResponse($data);

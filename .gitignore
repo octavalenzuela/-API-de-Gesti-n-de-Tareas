@@ -2,3 +2,4 @@ vendor/
 data/cache/
 data/database.sqlite
 config/autoload/*.local.php
+.phpunit.result.cache

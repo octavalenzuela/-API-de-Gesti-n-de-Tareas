@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Task\Handler;
 
 use App\Task\Repository\TaskRepository;
+use DateTimeImmutable;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -52,6 +53,20 @@ class UpdateTaskHandler implements RequestHandlerInterface
                 $task->changeStatus($body['status']);
             } catch (\InvalidArgumentException $e) {
                 return new JsonResponse(['error' => $e->getMessage()], 422);
+            }
+        }
+
+        if (array_key_exists('due_date', $body)) {
+            if ($body['due_date'] === null || $body['due_date'] === '') {
+                $task->updateDueDate(null); 
+            } else {
+                $dueDate = DateTimeImmutable::createFromFormat('Y-m-d', $body['due_date']);
+                
+                if (!$dueDate || $dueDate->format('Y-m-d') !== $body['due_date']) {
+                    return new JsonResponse(['error' => 'El campo "due_date" debe tener el formato YYYY-MM-DD.'], 422); 
+                }
+                
+                $task->updateDueDate($dueDate); 
             }
         }
 

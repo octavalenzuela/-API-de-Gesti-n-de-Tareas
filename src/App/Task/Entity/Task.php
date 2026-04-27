@@ -35,6 +35,9 @@ class Task
     #[ORM\Column(type: 'string', length: 20)]
     private string $status = 'pending';
 
+    #[ORM\Column(name: 'due_date', type: 'date_immutable', nullable: true)]
+    private ?DateTimeImmutable $dueDate = null; 
+
     #[ORM\Column(name: 'created_at', type: 'datetime_immutable')]
     private DateTimeImmutable $createdAt;
 
@@ -71,6 +74,11 @@ class Task
         return $this->status;
     }
 
+    public function getDueDate(): ?DateTimeImmutable
+    {
+        return $this->dueDate;
+    }
+
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
@@ -91,6 +99,11 @@ class Task
     public function updateDescription(?string $description): void
     {
         $this->description = $description;
+    }
+
+    public function updateDueDate(?DateTimeImmutable $dueDate): void
+    {
+        $this->dueDate = $dueDate;
     }
 
     public function changeStatus(string $status): void
@@ -120,6 +133,7 @@ class Task
             'title'       => $this->title,
             'description' => $this->description,
             'status'      => $this->status,
+            'due_date'    => $this->dueDate?->format('Y-m-d'),
             'created_at'  => $this->createdAt->format(DATE_ATOM),
             'updated_at'  => $this->updatedAt->format(DATE_ATOM),
         ];
